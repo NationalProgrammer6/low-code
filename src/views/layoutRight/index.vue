@@ -12,10 +12,6 @@
             <MyTabs v-model="activeKey"></MyTabs>
         </div>
         <div class="setting-page">
-            <Textarea v-model:value="str"></Textarea>
-            <Button @click="save">保存</Button>
-            <Textarea v-model:value="fn"></Textarea>
-            <Button @click="run">执行</Button>
             <AttributePanel v-show="activeKey === '属性'" />
             <EventPanel v-show="activeKey === '样式'" />
             <StylePanel v-show="activeKey === '事件'" />
@@ -34,20 +30,25 @@ import { _state, _stateKeys } from '@/stores/index.js'
 import { ref } from 'vue'
 const navList = ["页面", "Flex", 'Txt']
 const activeKey = ref('属性')
-import { currentSchema, schemaJson } from '@/stores/globalData.js'
-const str = ref('')
-const fn = ref('')
-function save() {
-    if (currentSchema && currentSchema.value) {
-        currentSchema.value.val = str.value
-    }
-}
-function run() {
-    // 使用.bind()创建一个新函数，该函数的this被永久绑定到obj  
-    let func = new Function(fn.value);
-    let newFn = func.bind(_state)
-    newFn()
-}
+import { currentSchema } from '@/stores/globalData.js'
+
+{/* <Textarea v-model:value="str"></Textarea>
+<Button @click="save">保存</Button>
+<Textarea v-model:value="fn"></Textarea>
+<Button @click="run">执行</Button> */}
+// const str = ref('')
+// const fn = ref('')
+// function save() {
+//     if (currentSchema && currentSchema.value) {
+//         currentSchema.value.val = str.value
+//     }
+// }
+// function run() {
+//     // 使用.bind()创建一个新函数，该函数的this被永久绑定到obj  
+//     let func = new Function(fn.value);
+//     let newFn = func.bind(_state)
+//     newFn()
+// }
 </script>
 
 <style scoped lang="scss">
@@ -77,6 +78,7 @@ function run() {
     }
 
     .setting-page {
+        padding: 8px;
         height: calc(100% - 66px);
         overflow-y: auto;
     }

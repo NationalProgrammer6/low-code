@@ -7,7 +7,6 @@ const props = defineProps({
         default: () => { }
     }
 })
-const mouseEvent = inject('mouseEvent')
 </script>
 
 <template>

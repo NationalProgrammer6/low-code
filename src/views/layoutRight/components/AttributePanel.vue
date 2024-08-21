@@ -3,8 +3,12 @@ console.log('222')
 </script>
 
 <template>
-    <h1>属性面版</h1>
+    <div class="attribute-panel">
+        <h1>属性面版</h1>
+    </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+.attribute-panel{
+}
 </style>
