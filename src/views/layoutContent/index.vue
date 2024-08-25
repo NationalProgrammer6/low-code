@@ -8,12 +8,15 @@ import { schemaJson, schemaMap, currentMaterial, currentSchema } from '@/stores/
 let currentSelect = null
 
 const drapLocationRef = ref(null)
-
 const hoverRef = ref(null)
+
 const containerRef = ref(null)
 let containerSize = null
+
+
 const hoverStyle = ref({})
 const selectStyle = ref({})
+
 // 放下
 function drop(event) {
     // 节流-按一秒24帧的间隔
@@ -25,7 +28,104 @@ function drop(event) {
         }, 41)
     }
 }
-// 寻找最近有id的祖先元素
+
+/**
+ * 移动或者新增节点
+ * @param event {事件对象}
+ */
+function moveOrDddNode(event) {
+    // 1、获取对应的schema
+    let id = findNodeId(event.target)
+    let schema = schemaMap.get(id)
+    // 2、找到参考元素
+    let insertIndex = 0
+    let { nearestElement, index } = FindReferenceNode(schema, event, true)
+    // 3、判断位于参考元素前后
+    if (nearestElement) {
+        let { left, right, bottom } = nearestElement.getBoundingClientRect()
+        let leftDistance = Math.abs(event.x - left)
+        let rightDistance = Math.abs(event.x - right)
+        if (schema.type === "page") {
+            console.log("________")
+            if (event.y > bottom) {
+                insertIndex = index + 1
+            }
+        } else {
+            insertIndex = leftDistance < rightDistance ? index : index + 1
+        }
+    }
+    console.log(insertIndex)
+    // 4、插入或者移动
+    if (currentMaterial.action === 'ADD') {
+        const newNode = new Material(currentMaterial.type)
+        if (schema.display === 'block') {
+            schema.children.splice(insertIndex, 0, newNode)
+        } else {
+            schema.parent.children.splice(insertIndex, 0, newNode)
+        }
+    } else {
+
+    }
+}
+
+/**
+ * 找到离事件对象最近的DOM
+ * @param elementList {DOM集合}
+ * @param event {事件对象}
+ */
+function getNearestElement(elementList, event) {
+    const { clientX, clientY } = event;
+    // 最小距离
+    let minDistance = Infinity;
+    // 最近元素
+    let nearestElement = null;
+    let minDist = Infinity
+    let index = 0
+    console.log(2222,clientX, clientY)
+    for (let key = 0; key < elementList.length; key++) {
+        let child = elementList[key]
+        const { left, right, top, bottom } = child.getBoundingClientRect();
+        if (clientX < left) {
+            if (clientY < top) {
+                minDist = calculateDiagonal(left - clientX, top - clientY)
+            } else if (clientY > bottom) {
+                minDist = calculateDiagonal(left - clientX, clientY - bottom)
+            } else {
+                minDist = left - clientX
+            }
+        } else if (clientX > right) {
+            if (clientY < top) {
+                minDist = calculateDiagonal(clientX - right, top - clientY)
+            } else if (clientY > bottom) {
+                minDist = calculateDiagonal(clientX - right, bottom - clientY)
+            } else {
+                minDist = clientX - right
+            }
+        } else {
+            if (clientY < top) {
+                minDist = top - clientY
+            } else if (clientY > bottom) {
+                minDist = clientY - bottom
+            } else {
+                minDist = 0
+            }
+        }
+        console.log(left, right, top, bottom,minDist)
+        if (minDist <= minDistance) {
+            index = key
+            minDistance = minDist;
+            nearestElement = child;
+        }
+    }
+
+    return { nearestElement, index }
+}
+
+
+/**
+ * 寻找最近有id的祖先元素
+ * @param element DOM元素
+ */
 function findNodeId(element) {
     if (!element) return null;
     let id = element.getAttribute('id')
@@ -59,40 +159,11 @@ function moveLeave() {
     }
 }
 
-/**
- * 找到离事件对象最近的DOM
- * @param elementList {DOM集合}
- * @param event {事件对象}
- */
-function getNearestElement(elementList, event) {
-    const { clientX, clientY } = event;
-    // 最小距离
-    let minDistance = Infinity;
-    // 最近元素
-    let nearestElement = null;
-    let index = 0
-    for (let key = 0; key < elementList.length; key++) {
-        let distances = [];
-        let child = elementList[key]
-        const childRect = child.getBoundingClientRect();
-        // 计算到四个边的距离  
-        distances.push(Math.abs(clientX - childRect.left));        // 到左边的距离  
-        distances.push(Math.abs(clientX - (childRect.left + childRect.width))); // 到右边的距离  
-        distances.push(Math.abs(clientY - childRect.top));         // 到上边的距离  
-        distances.push(Math.abs(clientY - (childRect.top + childRect.height))); // 到下边的距离  
 
-        // 找到最小的距离  
-        let minDist = Math.min(...distances);
-
-        if (minDist < minDistance) {
-            index = key
-            minDistance = minDist;
-            nearestElement = child;
-        }
-    }
-    return { nearestElement, index }
+function calculateDiagonal(width, height) {
+    let value = Math.sqrt(height ** 2 + width ** 2);
+    return value
 }
-
 // 在page上移动
 function movePage(element, event) {
     const rect = element.getBoundingClientRect()
@@ -115,39 +186,7 @@ function movePage(element, event) {
     })
 }
 
-/**
- * 移动或者新增节点
- * @param event {事件对象}
- */
-function moveOrDddNode(event) {
-    // 1、获取对应的schema
-    let id = findNodeId(event.target)
-    let schema = schemaMap.get(id)
-    // 2、找到参考元素
-    let insertIndex = 0
-    let { nearestElement, index } = FindReferenceNode(schema, event)
-    // 3、判断位于参考元素前后
-    if (nearestElement) {
-        let rect = nearestElement.getBoundingClientRect()
-        let leftDistance = Math.abs(event.x - rect.left)
-        let rightDistance = Math.abs(event.x - rect.right)
-        if (schema.type === "page") {
 
-        }
-        insertIndex = leftDistance < rightDistance ? index : index + 1
-    }
-    // 4、插入或者移动
-    if (currentMaterial.action === 'ADD') {
-        const newNode = new Material(currentMaterial.type)
-        if (schema.display === 'block') {
-            schema.children.splice(insertIndex, 0, newNode)
-        } else {
-            schema.parent.children.splice(insertIndex, 0, newNode)
-        }
-    } else {
-
-    }
-}
 
 /**
  * 获取参考元素
@@ -155,13 +194,13 @@ function moveOrDddNode(event) {
  * @param event {事件对象}
  * @returns {{nearestElement: DOM元素, index: 下标}}
  */
-function FindReferenceNode(schema, event) {
+function FindReferenceNode(schema, event, flag) {
     let nearestElement = document.getElementById(schema.id)
     // 如果是行内节点、直接找到他并返回
     if (schema.display === 'inline-block') {
         return { nearestElement, index: schema.index }
     }
-    return getNearestElement(nearestElement.children, event)
+    return getNearestElement(nearestElement.children, event, flag)
 }
 
 // 寻找提示落点
@@ -270,20 +309,20 @@ provide('mouseEvent', {
 
 <template>
     <div class="layout-content">
-            <div class="container-wrap">
-                <div class="container" @dragover.prevent="dragover" ref="containerRef" @click="clickHandle"
-                    @mousemove="moveHandle" @mouseleave="moveLeave" @drop="drop" :id="schemaJson.id">
-                    <template v-for="com in schemaJson.children" :key="com.id">
-                        <Render :schema="com" />
-                    </template>
-                </div>
-                <!-- 鼠标悬浮提示 -->
-                <div class="hover-wrap" ref="hoverRef" :style="hoverStyle"></div>
-                <!-- 选择提示 -->
-                <div class="select-wrap" :style="selectStyle"></div>
-                <!-- 拖拽落点提示 -->
-                <TheDrapLocation ref="drapLocationRef"></TheDrapLocation>
+        <div class="container-wrap">
+            <div class="container" ref="containerRef" @dragover.prevent="dragover" @click="clickHandle"
+                @mousemove="moveHandle" @mouseleave="moveLeave" @drop="drop" :id="schemaJson.id">
+                <template v-for="com in schemaJson.children" :key="com.id">
+                    <Render :schema="com" />
+                </template>
             </div>
+            <!-- 鼠标悬浮提示 -->
+            <div class="hover-wrap" ref="hoverRef" :style="hoverStyle"></div>
+            <!-- 选择提示 -->
+            <div class="select-wrap" :style="selectStyle"></div>
+            <!-- 拖拽落点提示 -->
+            <TheDrapLocation ref="drapLocationRef"></TheDrapLocation>
+        </div>
     </div>
 </template>
 
