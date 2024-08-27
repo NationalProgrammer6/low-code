@@ -46,7 +46,6 @@ function moveOrDddNode(event) {
         let leftDistance = Math.abs(event.x - left)
         let rightDistance = Math.abs(event.x - right)
         if (schema.type === "page") {
-            console.log("________")
             if (event.y > bottom) {
                 insertIndex = index + 1
             }
@@ -54,7 +53,6 @@ function moveOrDddNode(event) {
             insertIndex = leftDistance < rightDistance ? index : index + 1
         }
     }
-    console.log(insertIndex)
     // 4、插入或者移动
     if (currentMaterial.action === 'ADD') {
         const newNode = new Material(currentMaterial.type)
@@ -81,7 +79,6 @@ function getNearestElement(elementList, event) {
     let nearestElement = null;
     let minDist = Infinity
     let index = 0
-    console.log(2222,clientX, clientY)
     for (let key = 0; key < elementList.length; key++) {
         let child = elementList[key]
         const { left, right, top, bottom } = child.getBoundingClientRect();
@@ -110,7 +107,6 @@ function getNearestElement(elementList, event) {
                 minDist = 0
             }
         }
-        console.log(left, right, top, bottom,minDist)
         if (minDist <= minDistance) {
             index = key
             minDistance = minDist;

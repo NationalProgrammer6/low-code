@@ -1,6 +1,17 @@
 import { ref, watch } from 'vue'
 import { nanoid } from 'nanoid'
 
+const modules = import.meta.glob('@/components/**/index.ts',{ eager: true });
+console.log(modules)
+for (const path in modules) {
+    console.log(modules[path].default)
+}
+// Object.keys(modules).map(async (path) => {
+//     let component = await modules[path]()
+//     console.log(component.default)
+// })
+
+
 // 数据扁平化
 function flattenSchemaObject(schema, result = new Map, parent = null,index = 0) {
     schema.index = index
@@ -31,8 +42,8 @@ const currentSchema = ref(null)
 
 // schemaJson扁平化
 let schemaMap = new Map()
-
 watch(schemaJson.value,(newValue)=>{
+    // 当schema发生变化时重新
     schemaMap = flattenSchemaObject(newValue)
 },{
     immediate: true

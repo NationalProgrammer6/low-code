@@ -1,5 +1,4 @@
 <script setup lang='ts'>
-console.log('222')
 </script>
 
 <template>
