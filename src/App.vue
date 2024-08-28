@@ -6,7 +6,6 @@ import { RouterView } from 'vue-router'
 //   const routePath = path
 //     .replace('../views/', '')
 //     .replace('/index.vue', '');
-
 //     let com = await modules[path]()
 //     console.log(com)
 //     console.log(routePath)

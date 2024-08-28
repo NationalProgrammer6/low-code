@@ -1,16 +1,19 @@
 import { ref, watch } from 'vue'
 import { nanoid } from 'nanoid'
 
+// 引入物料
+const materialMap = new Map()
 const modules = import.meta.glob('@/components/**/index.ts',{ eager: true });
-console.log(modules)
 for (const path in modules) {
-    console.log(modules[path].default)
+    const module = modules[path].default
+    if(!materialMap.has(module.group)){
+        materialMap.set(module.group,{
+            name: module.group,
+            children: []
+        })
+    }
+    materialMap.get(module.group).children.push({...module})
 }
-// Object.keys(modules).map(async (path) => {
-//     let component = await modules[path]()
-//     console.log(component.default)
-// })
-
 
 // 数据扁平化
 function flattenSchemaObject(schema, result = new Map, parent = null,index = 0) {
@@ -50,9 +53,11 @@ watch(schemaJson.value,(newValue)=>{
 })
 
 
+export const materialList = [...materialMap.values()]
+
 export {
     schemaJson,
     schemaMap,
     currentMaterial,
-    currentSchema
+    currentSchema,
 }

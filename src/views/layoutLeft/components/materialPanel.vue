@@ -1,29 +1,10 @@
 <script setup>
 import { ref } from 'vue'
 import { Collapse, CollapsePanel } from 'ant-design-vue';
-import { currentMaterial }  from '@/stores/globalData.js' 
+import { currentMaterial, materialList } from '@/stores/globalData.js'
 const activeKey = ref(['1'])
-const materialList = [
-    {
-        type: 'basic',
-        label: '基本组件',
-        children: [
-            { label: '文本', type: 'Text', grouping: 'basic' },
-            { label: '按钮', type: 'Button', grouping: 'basic' },
-        ],
-    },
-    {
-        type: 'layout',
-        label: '布局组件',
-        children: [
-            { label: 'Div', type: 'Div', grouping: 'layout' },
-            { label: 'Flex', type: 'Flex', grouping: 'layout' },
-        ],
-    }
-
-]
 // 鼠标被按下
-function mousedown(component){
+function mousedown(component) {
     currentMaterial.type = component.type
     currentMaterial.action = 'ADD'
 }
@@ -32,42 +13,47 @@ function mousedown(component){
 <template>
     <div class="materia_Panel">
         <Collapse v-model:activeKey="activeKey" style="border-radius: 0">
-        <template v-for="(item, index) in materialList" :key="index">
-            <CollapsePanel :header="item.label" style="border-radius: 0">
-                <div class="mater-list">
-                    <div v-for="component in item.children" class="component" :draggable="true" @mousedown="mousedown(component)">
-                        {{ component.label }}
+            <template v-for="(item, index) in materialList" :key="index">
+                <CollapsePanel :header="item.name" style="border-radius: 0">
+                    <div class="mater-list">
+                        <div v-for="component in item.children" class="component" :draggable="true"
+                            :title="component.description"
+                            @mousedown="mousedown(component)">
+                            {{ component.name }}
+                        </div>
                     </div>
-                </div>
-            </CollapsePanel>
-        </template>
-    </Collapse>
+                </CollapsePanel>
+            </template>
+        </Collapse>
     </div>
 </template>
 
 <style lang="scss">
-.materia_Panel{
+.materia_Panel {
     width: 100%;
-    .ant-collapse-content-box{
+
+    .ant-collapse-content-box {
         padding: 0 !important;
     }
-    .mater-list{
-            display: flex;
-            flex-wrap: wrap;
-            .component{
-                width: 90px;
-                box-sizing: border-box;
-                cursor: pointer;
-                line-height: 80px;
-                text-align: center;
-                border-style: solid;
-                border-right: 1px #eaeaea solid;
-                border-bottom: 1px #eaeaea solid;
-                &:hover{
-                    box-shadow: 0 6px 16px 0 rgba(0,0,0,.15);
-                }
+
+    .mater-list {
+        display: flex;
+        flex-wrap: wrap;
+
+        .component {
+            width: 90px;
+            box-sizing: border-box;
+            cursor: pointer;
+            line-height: 80px;
+            text-align: center;
+            border-style: solid;
+            border-right: 1px #eaeaea solid;
+            border-bottom: 1px #eaeaea solid;
+
+            &:hover {
+                box-shadow: 0 6px 16px 0 rgba(0, 0, 0, .15);
             }
         }
+    }
 }
-
 </style>
