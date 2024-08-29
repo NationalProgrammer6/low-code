@@ -1,15 +1,24 @@
 <script setup>
 import { Button } from 'ant-design-vue';
+import { defineOptions } from 'vue';
+defineOptions({
+    name: 'MyButton',
+})
 const props = defineProps({
     schema: {
         type: Object,
-        default: () => {}
+        default: () => {
+            return {}
+        }
     },
     children: {
         type: Array,
-        default: () => []
+        default: () => {
+            return []
+        }
     }
 })
+
 </script>
 
 <template>

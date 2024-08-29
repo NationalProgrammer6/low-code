@@ -1,5 +1,4 @@
 <script setup>
-import { inject } from 'vue';
 
 const props = defineProps({
     schema: {
@@ -11,11 +10,11 @@ const props = defineProps({
 
 <template>
     <template v-if="schema.display === 'inline-block'">
-        <component :is="schema.component" :children="schema.children || []" :schema="schema">
+        <component :is="schema.componentName" :children="schema.children || []" :schema="schema">
         </component>
     </template>
     <template v-else class="c_wrap">
-        <component :is="schema.component" :children="schema.children || []" :schema="schema">
+        <component :is="schema.componentName" :children="schema.children || []" :schema="schema">
             <Empty v-if="!schema.children || schema.children.length === 0" />
         </component>
     </template>

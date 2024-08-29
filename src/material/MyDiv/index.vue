@@ -1,5 +1,10 @@
 <script setup>
-import Render from './Render.vue';
+import Render from '../Render.vue';
+import { ref } from 'vue';
+import { defineOptions } from 'vue';
+defineOptions({
+    name: 'MyDiv',
+})
 const props = defineProps({
     schema: {
         type: Object,
@@ -10,11 +15,7 @@ const props = defineProps({
         default: () => []
     }
 })
-import { onMounted, ref } from 'vue';
 const myRef = ref('')
-onMounted(() =>{
-    props.schema.setClientRect( myRef.value.getBoundingClientRect())
-})
 </script>
 
 <template>

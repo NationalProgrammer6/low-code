@@ -1,6 +1,6 @@
 <script setup>
 import TheDrapLocation from './components/TheDrapLocation.vue';
-import Render from '@/components/Render.vue';
+import Render from '@/material/Render.vue';
 import { debounce } from 'lodash-es'
 import { onMounted, provide, ref } from 'vue'
 import Material from '@/utils/material'

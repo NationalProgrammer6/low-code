@@ -11,7 +11,12 @@ import '@/style/index.scss'
 import 'ant-design-vue/dist/reset.css';
 
 const app = createApp(App)
+
 app.component('Empty', Empty);
+
+import { initMaterials } from './material/registerMaterials';
+initMaterials(app)
+
 app.use(createPinia())
 app.use(router)
 

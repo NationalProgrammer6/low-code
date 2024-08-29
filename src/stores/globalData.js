@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid'
 
 // 引入物料
 const materialMap = new Map()
-const modules = import.meta.glob('@/components/**/index.ts',{ eager: true });
+const modules = import.meta.glob('@/material/**/index.ts',{ eager: true });
 for (const path in modules) {
     const module = modules[path].default
     if(!materialMap.has(module.group)){

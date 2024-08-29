@@ -1,6 +1,11 @@
 <script setup>
 import { currentSchema } from '@/stores/globalData.js'
+import { defineOptions } from 'vue';
+defineOptions({
+    name: 'MyText',
+})
 import { _state, _stateKeys } from '@/stores/index.js'
+
 const props = defineProps({
     schema: {
         type: Object,
