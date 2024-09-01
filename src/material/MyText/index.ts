@@ -11,6 +11,7 @@ export default{
     props: [
         {
             name: '内容',
+            value: 'txt',
             propType: {
                 defaultValue: '静态文本',
                 inputType: 'Input',
@@ -19,6 +20,7 @@ export default{
         },
         {
             name: '文本类型',
+            value: 'type',
             propType: {
                 inputType: 'Select',
                 defaultValue: 'span',

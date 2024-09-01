@@ -7,7 +7,7 @@ import { Collapse, CollapsePanel, Input, Empty } from 'ant-design-vue';
 import { currentMaterial, materialList } from '@/stores/globalData.js'
 import { SearchOutlined } from '@ant-design/icons-vue';
 import { debounce } from 'lodash-es'
-const activeKey = ref(['1'])
+const activeKey = ref(['0','1'])
 // 鼠标被按下
 function mousedown(component) {
     currentMaterial.type = component.type

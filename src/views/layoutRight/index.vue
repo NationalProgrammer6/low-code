@@ -65,7 +65,6 @@ let formData = {}
 watch(()=>currentNode.value.id,()=>{
     navList.value = getNavPath(currentNode.value,[])
     formData = materialMap.get(currentNode.value.type)
-    console.log(888,formData)
 })
 </script>
 
