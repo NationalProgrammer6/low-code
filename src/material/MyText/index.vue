@@ -1,5 +1,5 @@
 <script setup>
-import { currentSchema } from '@/stores/globalData.js'
+import { currentNode } from '@/stores/globalData.js'
 import { defineOptions } from 'vue';
 defineOptions({
     name: 'MyText',
@@ -18,7 +18,7 @@ const props = defineProps({
 })
 let key = ref(null)
 import { ref, watch } from 'vue';
-watch(currentSchema,(newValue)=>{
+watch(currentNode,(newValue)=>{
     if(newValue){
         key.value = newValue.val
     } else {

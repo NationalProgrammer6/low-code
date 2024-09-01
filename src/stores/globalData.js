@@ -2,17 +2,13 @@ import { ref, watch } from 'vue'
 import { nanoid } from 'nanoid'
 
 // 引入物料
+const materialList = []
 const materialMap = new Map()
 const modules = import.meta.glob('@/material/**/index.ts',{ eager: true });
 for (const path in modules) {
     const module = modules[path].default
-    if(!materialMap.has(module.group)){
-        materialMap.set(module.group,{
-            name: module.group,
-            children: []
-        })
-    }
-    materialMap.get(module.group).children.push({...module})
+    materialList.push(module)
+    materialMap.set(module.type,module)
 }
 
 // 数据扁平化
@@ -41,7 +37,7 @@ const schemaJson = ref({
 })
 
 // 选中的节点
-const currentSchema = ref(null)
+const currentNode = ref({})
 
 // schemaJson扁平化
 let schemaMap = new Map()
@@ -52,12 +48,11 @@ watch(schemaJson.value,(newValue)=>{
     immediate: true
 })
 
-
-export const materialList = [...materialMap.values()]
-
 export {
     schemaJson,
     schemaMap,
     currentMaterial,
-    currentSchema,
+    currentNode,
+    materialList,
+    materialMap
 }

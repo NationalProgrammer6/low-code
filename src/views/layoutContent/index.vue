@@ -4,7 +4,7 @@ import Render from '@/material/Render.vue';
 import { debounce } from 'lodash-es'
 import { onMounted, provide, ref } from 'vue'
 import Material from '@/utils/material'
-import { schemaJson, schemaMap, currentMaterial, currentSchema } from '@/stores/globalData.js'
+import { schemaJson, schemaMap, currentMaterial, currentNode } from '@/stores/globalData.js'
 let currentSelect = null
 
 const drapLocationRef = ref(null)
@@ -267,7 +267,7 @@ function clickHandle(event) {
     if (event && event.target) {
         const id = findNodeId(event.target)
         let schema = schemaMap.get(id)
-        currentSchema.value = schema
+        currentNode.value = schema
         const rect = event.target.getBoundingClientRect()
         currentSelect = event
         selectStyle.value = {

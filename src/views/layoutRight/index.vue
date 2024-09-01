@@ -12,7 +12,7 @@
             <MyTabs v-model="activeKey"></MyTabs>
         </div>
         <div class="setting-page">
-            <AttributePanel v-show="activeKey === '属性'" />
+            <AttributePanel v-show="activeKey === '属性'"  :attribute="formData.props" />
             <EventPanel v-show="activeKey === '样式'" />
             <StylePanel v-show="activeKey === '事件'" />
         </div>
@@ -23,14 +23,14 @@
 import AttributePanel from './components/AttributePanel.vue';
 import EventPanel from './components/EventPanel.vue';
 import StylePanel from './components/StylePanel.vue';
-import { Textarea, Button } from 'ant-design-vue'
 import MyTabs from './components/MyTabs.vue'
 import { RightOutlined } from '@ant-design/icons-vue';
 import { _state, _stateKeys } from '@/stores/index.js'
 import { ref } from 'vue'
-const navList = ["页面", "Flex", 'Txt']
+const navList = ref(["页面", "Flex", 'Txt'])
 const activeKey = ref('属性')
-import { currentSchema } from '@/stores/globalData.js'
+import { currentNode, materialMap } from '@/stores/globalData.js'
+import { watch } from 'vue';
 
 {/* <Textarea v-model:value="str"></Textarea>
 <Button @click="save">保存</Button>
@@ -39,8 +39,8 @@ import { currentSchema } from '@/stores/globalData.js'
 // const str = ref('')
 // const fn = ref('')
 // function save() {
-//     if (currentSchema && currentSchema.value) {
-//         currentSchema.value.val = str.value
+//     if (currentNode && currentNode.value) {
+//         currentNode.value.val = str.value
 //     }
 // }
 // function run() {
@@ -49,6 +49,24 @@ import { currentSchema } from '@/stores/globalData.js'
 //     let newFn = func.bind(_state)
 //     newFn()
 // }
+
+function getNavPath(node, arr){
+    if(node && node.type){
+        arr.push(node.type)
+    }
+    if(node && node.parent){
+        getNavPath(node.parent,arr)
+    }
+    return arr
+}
+
+let formData = {}
+//  选中的节点发生变化时 
+watch(()=>currentNode.value.id,()=>{
+    navList.value = getNavPath(currentNode.value,[])
+    formData = materialMap.get(currentNode.value.type)
+    console.log(888,formData)
+})
 </script>
 
 <style scoped lang="scss">
