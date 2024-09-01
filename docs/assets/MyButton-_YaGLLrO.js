@@ -1,1 +1,0 @@
-import{a,d as r,h as s,i as c,t as i,u as n,B as o}from"./index-CS6WVaT7.js";const p={__name:"MyButton",props:{schema:{type:Object,default:()=>{}},children:{type:Array,default:()=>[]}},setup(e){return(u,d)=>(a(),r(n(o),{type:"primary",id:e.schema.id},{default:s(()=>{var t;return[c(i((t=e.schema)==null?void 0:t.label),1)]}),_:1},8,["id"]))}};export{p as default};

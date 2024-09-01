@@ -13,7 +13,8 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-  build: {  
-    outDir: 'dist/doc',  
-  },  
+  base: "/low-code"
+  // build: {  
+  //   outDir: 'dist/doc',  
+  // },  
 })
