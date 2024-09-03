@@ -28,6 +28,10 @@ function handleListToTree(list) {
         materialMap.get(material.group).children.push({ ...material })
     });
     materialTree.value = [...materialMap.values()]
+    // 默认全部暂开
+    activeKey = materialTree.value.map((item,index)=>{
+        return index
+    })
 }
 
 const handleSearch = debounce(handleListToTree, 200)
