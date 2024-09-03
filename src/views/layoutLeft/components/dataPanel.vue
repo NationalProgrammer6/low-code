@@ -2,7 +2,7 @@
 import { reactive, ref } from 'vue'
 import { _state, _stateKeys } from '@/stores/index.js'
 import { Collapse, CollapsePanel, Modal, Form, FormItem, Input, Textarea, Button, List, ListItem } from 'ant-design-vue';
-import { CaretRightOutlined, PlusOutlined } from '@ant-design/icons-vue';
+import { CaretRightOutlined, PlusOutlined, EditOutlined } from '@ant-design/icons-vue';
 const activeKey = ref("")
 function handleClick() { }
 const showAddModel = ref(false)
@@ -12,6 +12,7 @@ const formState = reactive({
     describe: '',
     initValue: ''
 })
+
 const stateRules = {
     variable: [
         { required: true, message: '请输入变量名' },
@@ -51,6 +52,7 @@ function clearFormState() {
         formState[key] = "";
     });
 }
+function edit(){}
 </script>
 
 <template>
@@ -61,20 +63,25 @@ function clearFormState() {
             </template>
             <CollapsePanel style="border-radius: 0" key="1" header="data(接口数据)">
                 <template #extra>
-                    <PlusOutlined @click="handleClick" />
+                    <div class="icon-wrap" @click="handleClick">
+                        <PlusOutlined  />
+                    </div>
                 </template>
             </CollapsePanel>
             <CollapsePanel style="border-radius: 0" key="2" header="state(页面变量)">
                 <template #extra>
-                    <PlusOutlined @click.stop="showAddModel = true" />
+                    <div class="icon-wrap">
+                        <PlusOutlined @click.stop="showAddModel = true" />
+                    </div>
                 </template>
                 <List :data-source="_stateKeys" size="small">
                     <template #renderItem="{ item }">
                         <ListItem>
                             {{ item }}
                             <template #actions>
-                                <a key="list-loadmore-edl">del</a>
-                                <a key="list-loadmore-edit">edit</a>
+                                <div class="icon-wrap" @click="edit" >
+                                    <EditOutlined title="编辑" />
+                                </div>
                             </template>
                         </ListItem>
                     </template>
@@ -107,6 +114,17 @@ function clearFormState() {
 <style lang="scss">
 .data-panel {
     height: 100%;
+    .icon-wrap{
+        width: 24px;
+        height: 24px;
+        ling-height: 24px;
+        text-align: center;
+        cursor: pointer;
+        &:hover{
+            background: #f00;
+            font-width: 500;
+        }
+    }
 }
 
 .row {
