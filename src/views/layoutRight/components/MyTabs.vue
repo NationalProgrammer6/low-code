@@ -18,6 +18,7 @@ function changeItem(itme){
     model.value = itme
 }
 </script>
+
 <style scoped lang="scss">
 .my-tabs{
     min-height: 32px;

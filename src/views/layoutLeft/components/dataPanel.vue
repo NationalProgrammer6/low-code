@@ -39,15 +39,15 @@ function saveState() {
         .validate()
         .then(() => {
             _state[formState.variable] = formState.initValue
-            showAddModel.value = false
-            Object.keys(formState).forEach(key => {
-                formState[key] = "";
-            });
+            clearFormState()
         }).catch(err => { })
 }
 
 function clearFormState() {
-    formRef.value.clearValidate()
+    if(showAddModel.value){
+        showAddModel.value = false
+    }
+    formRef.value && formRef.value.clearValidate()
     Object.keys(formState).forEach(key => {
         formState[key] = "";
     });
@@ -89,7 +89,12 @@ function edit(){}
             </CollapsePanel>
         </Collapse>
         <!-- 页面变量弹窗 -->
-        <Modal v-model:open="showAddModel" title="创建页面变量" :bodyStyle="{ paddingTop: '20px' }" @Cancel="clearFormState">
+        <Modal 
+            v-model:open="showAddModel" 
+            title="创建页面变量" 
+            :bodyStyle="{ paddingTop: '20px' }"
+            @Cancel="clearFormState"
+        >
             <Form :model="formState" :rules="stateRules" ref="formRef">
                 <div class="row">
                     <FormItem label="变量名" name="variable" class="var">
@@ -104,7 +109,7 @@ function edit(){}
                 </FormItem>
             </Form>
             <template #footer>
-                <Button @click="showAddModel = false">取消</Button>
+                <Button @click="clearFormState">取消</Button>
                 <Button key="submit" type="primary" @click="saveState">确定</Button>
             </template>
         </Modal>
@@ -117,12 +122,12 @@ function edit(){}
     .icon-wrap{
         width: 24px;
         height: 24px;
-        ling-height: 24px;
+        line-height: 24px;
         text-align: center;
         cursor: pointer;
         &:hover{
-            background: #f00;
-            font-width: 500;
+            font-weight: 500;
+            color: #333;
         }
     }
 }

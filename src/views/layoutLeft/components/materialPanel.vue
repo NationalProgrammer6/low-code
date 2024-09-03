@@ -29,7 +29,7 @@ function handleListToTree(list) {
     });
     materialTree.value = [...materialMap.values()]
     // 默认全部暂开
-    activeKey = materialTree.value.map((item,index)=>{
+    activeKey.value = materialTree.value.map((item,index)=>{
         return index
     })
 }
