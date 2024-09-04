@@ -19,6 +19,7 @@ const props = defineProps({
 let key = ref(null)
 import { ref, watch } from 'vue';
 watch(currentNode,(newValue)=>{
+    console.log(222,newValue)
     if(newValue){
         key.value = newValue.val
     } else {
@@ -28,7 +29,7 @@ watch(currentNode,(newValue)=>{
 </script>
 
 <template>
-    <span class="txt"  :id="schema.id">{{ schema?.label }}</span>
+    <component :is="schema.props.type" :id="schema.id" class="txt"> {{ schema.props.txt || schema.label}}--{{ schema.props.type }}</component>
 </template>
 
 <style scoped>

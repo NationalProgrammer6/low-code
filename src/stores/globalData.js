@@ -11,6 +11,14 @@ for (const path in modules) {
     materialMap.set(module.type,module)
 }
 
+function setProps(props){
+    let newProps = {}
+    props && props.forEach(item =>{
+        newProps[item.value] = item.propType?.defaultValue || ''
+    })
+    return newProps
+}
+
 // 数据扁平化
 function flattenSchemaObject(schema, result = new Map, parent = null,index = 0) {
     schema.index = index
@@ -54,5 +62,6 @@ export {
     currentMaterial,
     currentNode,
     materialList,
-    materialMap
+    materialMap,
+    setProps
 }

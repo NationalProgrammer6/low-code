@@ -14,11 +14,17 @@ const formData = ref({})
 const props = ref([])
 watch(()=>currentNode.value.id,()=>{
     let node = materialMap.get(currentNode.value.type)
-    props.value = node.props || {}
+    formData.value = {}
+    Object.keys(currentNode.value.props).forEach(key=>{
+        formData.value[key] = currentNode.value.props[key]
+    })
+    props.value = node.props || {} 
+    console.log(333,props.value)
 })
-const change = (e) =>{
-    console.log(e)
-    console.log(e.target.getAttribute('_key'))
+const change = (e,options) =>{
+    // console.log(222,e,options,this)
+    const key = e.target.getAttribute('_key')
+    currentNode.value.props[key] = e.target.value
 }
 </script>
 
