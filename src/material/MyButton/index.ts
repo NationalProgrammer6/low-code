@@ -9,8 +9,18 @@ export default{
     keywords: '按钮 Button', // 关键字
     isContainer: false, // 是否是容器
     events: {},
+    props: [
+        {
+            name: '内容',
+            value: 'txt',
+            propType: {
+                defaultValue: '按钮',
+                inputType: 'Input',
+            }
+        },
+    ]
+
 
     // category 如果有多个面板，group是第一分组 category是第二分组
     // priority category中的排序
-
 }

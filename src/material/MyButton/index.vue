@@ -22,7 +22,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <Button type="primary" :id="schema.id">{{ schema?.label }}</Button>
+    <Button type="primary" :id="schema.id">{{ schema.props.txt || schema?.label }}</Button>
 </template>
 
 <style scoped>

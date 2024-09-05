@@ -1,13 +1,16 @@
 <script setup>
-import { ref, watch, defineComponent } from 'vue'
-import { Input, Select, Textarea, FormItem } from 'ant-design-vue';
+import { ref, watch } from 'vue'
+import { FormItem } from 'ant-design-vue';
 import { currentNode, materialMap } from '@/stores/globalData.js'
+import SetterInput from './components/SetterInput.vue';
+import SetterSelect from './components/SetterSelect.vue';
+// 获取组件
 function getComponent(propType){
     if(propType.inputType === 'Input'){
-        return Input
+        return SetterInput
     }
     if(propType.inputType === 'Select'){
-        return Select
+        return SetterSelect
     }
 }
 const formData = ref({})
@@ -19,12 +22,9 @@ watch(()=>currentNode.value.id,()=>{
         formData.value[key] = currentNode.value.props[key]
     })
     props.value = node.props || {} 
-    console.log(333,props.value)
 })
-const change = (e,options) =>{
-    // console.log(222,e,options,this)
-    const key = e.target.getAttribute('_key')
-    currentNode.value.props[key] = e.target.value
+function change(type,value) {
+    currentNode.value.props[type] = value
 }
 </script>
 
@@ -36,9 +36,10 @@ const change = (e,options) =>{
                     <component 
                         :is="getComponent(item.propType)" 
                         :options="item.propType.options"
-                        v-model:value="formData[item.value]"
-                        :_key="item.value"
+                        :type="item.value"
                         @change="change"
+                        :initialValue="formData[item.value]"
+                        :key="currentNode.id + item.value"
                         >
                     </component>
                 </FormItem>

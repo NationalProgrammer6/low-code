@@ -13,7 +13,4 @@ export default defineConfig({
   },
   base: "/low-code",
   outDir: "/docs",
-  // build: {
-  //   outDir: 'dist/doc',
-  // },
 });

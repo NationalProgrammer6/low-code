@@ -29,7 +29,7 @@ watch(currentNode,(newValue)=>{
 </script>
 
 <template>
-    <component :is="schema.props.type" :id="schema.id" class="txt"> {{ schema.props.txt || schema.label}}--{{ schema.props.type }}</component>
+    <component :is="schema.props.type" :id="schema.id" class="txt"> {{ schema.props.txt || schema.label}}</component>
 </template>
 
 <style scoped>
