@@ -14,7 +14,7 @@ for (const path in modules) {
 function setProps(props){
     let newProps = {}
     props && props.forEach(item =>{
-        newProps[item.value] = item.propType?.defaultValue || ''
+        newProps[item.name] = item.defaultValue || ''
     })
     return newProps
 }

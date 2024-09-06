@@ -3,7 +3,6 @@ import { nanoid } from 'nanoid'
 import { materialMap, setProps } from '@/stores/globalData'
 export default class Material{
     constructor(type){
-        // const material = materialList.find(item =>item.type === type)
         const material = materialMap.get(type)
         this.id = nanoid(10)
         this.label = '组件描述' + nanoid(5)
@@ -18,9 +17,6 @@ export default class Material{
     }
     initProps(props){
         this.props = setProps(props)
-    }
-    setClientRect(rect){
-        this.rect = rect
     }
     getClientRect(){
         return this.rect

@@ -6,7 +6,6 @@ const props = defineProps({
         default: () => { }
     }
 })
-console.log(333,props.schema)
 </script>
 
 <template>

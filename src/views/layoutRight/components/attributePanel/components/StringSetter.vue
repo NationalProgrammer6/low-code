@@ -1,6 +1,7 @@
 <script setup>
 import { defineEmits, ref  } from 'vue';  
 import { Textarea} from 'ant-design-vue';
+import { defineOptions } from 'vue';
 const props = defineProps({
     type: {
         type: String,
@@ -13,8 +14,9 @@ function change(){
     emits('change',props.type,value)
 }
 defineOptions({
-    name: 'SetterInput'
+    name: 'StringSetter'
 })
+console.log(3333333)
 </script>
 
 <template>

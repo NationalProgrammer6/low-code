@@ -11,16 +11,15 @@ export default{
     events: {},
     props: [
         {
-            name: '内容',
-            value: 'txt',
-            propType: {
-                defaultValue: '按钮',
-                inputType: 'Input',
-            }
+            name: 'txt',
+            label: '内容',
+            propType: 'string',
+            defaultValue: '输入文本',
+            setter: 'StringSetter',
         },
     ]
-
-
-    // category 如果有多个面板，group是第一分组 category是第二分组
-    // priority category中的排序
 }
+
+
+// category 如果有多个面板，group是第一分组 category是第二分组
+// priority category中的排序

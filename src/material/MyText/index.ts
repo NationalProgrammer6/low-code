@@ -10,20 +10,19 @@ export default{
     isContainer: false, // 是否是容器
     props: [
         {
-            name: '内容',
-            value: 'txt',
-            propType: {
-                defaultValue: '静态文本',
-                inputType: 'Input',
-                placeholder: '输入文本'
-            }
+            name: 'txt',
+            label: '文本',
+            propType: 'string',
+            defaultValue: '输入文本',
+            setter: 'StringSetter',
         },
         {
-            name: '文本类型',
-            value: 'type',
-            propType: {
-                inputType: 'Select',
-                defaultValue: 'span',
+            name: 'type',
+            label: '文本类型',
+            propType: 'string',
+            defaultValue: 'span',
+            setter: {
+                componentName: 'SelectSetter',
                 options: [
                     {lable:'文本',value: 'span'},
                     {lable:'h1',value: 'h1'},
@@ -31,7 +30,7 @@ export default{
                     {lable:'h3',value: 'h3'},
                 ],
             },
-
+            
         }
     ]
 

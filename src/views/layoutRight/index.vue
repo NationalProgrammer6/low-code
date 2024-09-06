@@ -12,7 +12,7 @@
             <MyTabs v-model="activeKey"></MyTabs>
         </div>
         <div class="setting-page">
-            <AttributePanel v-show="activeKey === '属性'"  :attribute="formData.props" />
+            <AttributePanel v-show="activeKey === '属性'"  />
             <EventPanel v-show="activeKey === '样式'" />
             <StylePanel v-show="activeKey === '事件'" />
         </div>

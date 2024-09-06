@@ -19,7 +19,6 @@ const props = defineProps({
 let key = ref(null)
 import { ref, watch } from 'vue';
 watch(currentNode,(newValue)=>{
-    console.log(222,newValue)
     if(newValue){
         key.value = newValue.val
     } else {
