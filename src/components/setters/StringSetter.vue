@@ -16,7 +16,6 @@ function change(){
 defineOptions({
     name: 'StringSetter'
 })
-console.log(3333333)
 </script>
 
 <template>

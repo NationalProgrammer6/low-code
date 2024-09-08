@@ -2,23 +2,20 @@
 import { ref, watch } from 'vue'
 import { FormItem } from 'ant-design-vue';
 import { currentNode, materialMap } from '@/stores/globalData.js'
-import StringSetter from './components/StringSetter.vue';
-import SelectSetter from './components/SelectSetter.vue';
-// 获取组件
+/**
+ * 获取组件名 
+ * @param setter 
+ */
 function getComponent(setter){
     let componentName = setter
     if(typeof setter === 'object'){
         componentName = setter.componentName
     }
-    if(componentName === 'StringSetter'){
-        return 'StringSetter'
-    }
-    if(componentName === 'SelectSetter'){
-        return 'SelectSetter'
-    }
+    return componentName
 }
 const formData = ref({})
 const props = ref([])
+// 切换选中节点时 更新属性页面
 watch(()=>currentNode.value.id,()=>{
     formData.value = {}
     let node = materialMap.get(currentNode.value.type)
@@ -27,6 +24,7 @@ watch(()=>currentNode.value.id,()=>{
             formData.value[key] = currentNode.value.props[key]
         })
         props.value = node.props || {} 
+        console.log(3333,props.value)
     }
 
 })

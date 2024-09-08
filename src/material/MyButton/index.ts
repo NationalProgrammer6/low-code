@@ -14,7 +14,7 @@ export default{
             name: 'txt',
             label: '内容',
             propType: 'string',
-            defaultValue: '输入文本',
+            defaultValue: '按钮',
             setter: 'StringSetter',
         },
     ]

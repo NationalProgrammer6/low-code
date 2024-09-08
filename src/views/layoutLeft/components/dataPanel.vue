@@ -1,18 +1,22 @@
-<script setup lang='ts'>
+<script setup>
 import { reactive, ref } from 'vue'
 import { _state, _stateKeys } from '@/stores/index.js'
+import { Tree } from 'ant-design-vue';
 import { Collapse, CollapsePanel, Modal, Form, FormItem, Input, Textarea, Button, List, ListItem } from 'ant-design-vue';
 import { CaretRightOutlined, PlusOutlined, EditOutlined } from '@ant-design/icons-vue';
+// https://jsonplaceholder.typicode.com/users
 const activeKey = ref("")
 function handleClick() { }
-const showAddModel = ref(false)
-const formRef = ref(null)
-const formState = reactive({
+
+
+const stateModel = ref(false)
+const stateFormRef = ref(null)
+const isStateEdit = ref(false)
+const stateForm = reactive({
     variable: "",
     describe: '',
-    initValue: ''
+    value: ''
 })
-
 const stateRules = {
     variable: [
         { required: true, message: '请输入变量名' },
@@ -32,27 +36,34 @@ const stateRules = {
             trigger: 'blur',
         },
     ],
-    initValue: { required: true, message: '请设置初始值' }
+    value: { required: true, message: '请设置初始值' }
 }
 function saveState() {
-    formRef.value
+    stateFormRef.value
         .validate()
         .then(() => {
-            _state[formState.variable] = formState.initValue
-            clearFormState()
+            _state[stateForm.variable] = {
+                value: stateForm.value,
+                describe: stateForm.describe,
+                type: typeof stateForm.value
+            }
+            clearstateForm()
         }).catch(err => { })
 }
-
-function clearFormState() {
-    if(showAddModel.value){
-        showAddModel.value = false
+function clearstateForm() {
+    if(stateModel.value){
+        stateModel.value = false
     }
-    formRef.value && formRef.value.clearValidate()
-    Object.keys(formState).forEach(key => {
-        formState[key] = "";
+    stateFormRef.value && stateFormRef.value.clearValidate()
+    Object.keys(stateForm).forEach(key => {
+        stateForm[key] = "";
     });
 }
-function edit(){}
+function editState(field){
+    isStateEdit.value = true
+}
+
+
 </script>
 
 <template>
@@ -71,15 +82,20 @@ function edit(){}
             <CollapsePanel style="border-radius: 0" key="2" header="state(页面变量)">
                 <template #extra>
                     <div class="icon-wrap">
-                        <PlusOutlined @click.stop="showAddModel = true" />
+                        <PlusOutlined @click.stop="stateModel = true" />
                     </div>
                 </template>
+                <!-- <Tree :tree-data="_stateKeys.map(item=>{
+                    return { key: item, title: item}
+                })"></Tree> -->
                 <List :data-source="_stateKeys" size="small">
                     <template #renderItem="{ item }">
                         <ListItem>
+                            <span>{{ _state[item].type }}</span>
                             {{ item }}
+                            <span>:{{ _state[item].value }}</span>
                             <template #actions>
-                                <div class="icon-wrap" @click="edit" >
+                                <div class="icon-wrap" @click="editState(item)" >
                                     <EditOutlined title="编辑" />
                                 </div>
                             </template>
@@ -88,28 +104,28 @@ function edit(){}
                 </List>
             </CollapsePanel>
         </Collapse>
-        <!-- 页面变量弹窗 -->
+        <!-- 添加页面变量弹窗 -->
         <Modal 
-            v-model:open="showAddModel" 
+            v-model:open="stateModel" 
             title="创建页面变量" 
             :bodyStyle="{ paddingTop: '20px' }"
-            @Cancel="clearFormState"
+            @Cancel="clearstateForm"
         >
-            <Form :model="formState" :rules="stateRules" ref="formRef">
+            <Form :model="stateForm" :rules="stateRules" ref="stateFormRef">
                 <div class="row">
                     <FormItem label="变量名" name="variable" class="var">
-                        <Input v-model:value="formState.variable" addon-before="state." />
+                        <Input v-model:value="stateForm.variable" addon-before="state." />
                     </FormItem>
                     <FormItem name="describe" class="var-name" placeholder="中文名">
-                        <Input v-model:value="formState.describe" />
+                        <Input v-model:value="stateForm.describe" />
                     </FormItem>
                 </div>
-                <FormItem label="初始值" name="initValue">
-                    <Textarea v-model:value="formState.initValue"></Textarea>
+                <FormItem label="初始值" name="value">
+                    <Textarea v-model:value="stateForm.value"></Textarea>
                 </FormItem>
             </Form>
             <template #footer>
-                <Button @click="clearFormState">取消</Button>
+                <Button @click="clearstateForm">取消</Button>
                 <Button key="submit" type="primary" @click="saveState">确定</Button>
             </template>
         </Modal>

@@ -19,12 +19,10 @@ function change(value){
     emits('change',props.type,value)
 }
 defineOptions({
-    name: 'SetterSelect'
+    name: 'SelectSetter'
 })
 </script>
 
 <template>
-    <div>
     <Select @change="change" :options="options" v-model:value="value"></Select>
-    </div>
 </template>
