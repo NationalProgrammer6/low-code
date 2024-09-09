@@ -63,7 +63,50 @@ function editState(field){
     isStateEdit.value = true
 }
 
+function getType(value) {
+    let type =  '??'
+    if(Object.prototype.toString.call(value) === '[object Object]'){
+        return 'object'
+    }
+    if(Object.prototype.toString.call(value) === '[object Null]'){
+        return 'null'
+    }
+    let typeArray = ['number','string','boolean']
+    if(typeArray.includes(typeof value)){
+        return typeof value
+    }
+    return type;  
+}
 
+function handleChildren(children){
+    if(typeof children != 'object' || Array.isArray(children)) return ''
+    return Object.keys(children).map(key =>{
+        console.log(children[key])
+        return {
+            key,
+            type: getType(children[key]),
+            value: children[key],
+            describe: '',
+            children: children[key] ? handleChildren(handleChildren) : ''
+        }
+    })
+}
+
+function handleState(state){
+    return Object.keys(state).map(key =>{
+        let noed = {
+            ...state[key],
+            key,
+            type: getType(state[key].value)
+        }
+        if(noed.value && typeof noed.value == 'object'){
+            noed.children = handleChildren(noed.value)
+        }
+        return noed
+    })
+}
+const list = handleState(_state)
+console.log(list)
 </script>
 
 <template>
@@ -85,10 +128,16 @@ function editState(field){
                         <PlusOutlined @click.stop="stateModel = true" />
                     </div>
                 </template>
-                <!-- <Tree :tree-data="_stateKeys.map(item=>{
-                    return { key: item, title: item}
-                })"></Tree> -->
-                <List :data-source="_stateKeys" size="small">
+                <Tree :tree-data="list">
+                    <template #title="{ value, key, type,children }">
+                        <div>
+                            <span>{{ key }}</span> : 
+                            <span>{{ type }}</span> :
+                            <span v-if="!children">{{ value }}</span>
+                        </div>
+                    </template>
+                </Tree>
+                <!-- <List :data-source="_stateKeys" size="small">
                     <template #renderItem="{ item }">
                         <ListItem>
                             <span>{{ _state[item].type }}</span>
@@ -101,7 +150,7 @@ function editState(field){
                             </template>
                         </ListItem>
                     </template>
-                </List>
+                </List> -->
             </CollapsePanel>
         </Collapse>
         <!-- 添加页面变量弹窗 -->
