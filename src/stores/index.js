@@ -7,7 +7,7 @@ const _state = reactive({
         describe: '一个数值',
     },
     str: {
-        value: 'hello word',
+        value: 'hello word 除非是胜多负少的发的说法手打递四方速递防守打法 防守打法是的',
         describe: '一个字符串',
     },
     person: {

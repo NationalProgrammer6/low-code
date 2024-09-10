@@ -64,16 +64,21 @@ function editState(field){
 }
 
 function getType(value) {
-    let type =  '??'
+    let type =  '???'
     if(Object.prototype.toString.call(value) === '[object Object]'){
-        return 'object'
+        return 'Obj.'
     }
     if(Object.prototype.toString.call(value) === '[object Null]'){
-        return 'null'
+        return 'Nul.'
     }
-    let typeArray = ['number','string','boolean']
-    if(typeArray.includes(typeof value)){
-        return typeof value
+    if(typeof value === 'number'){
+        return '123.'
+    }
+    if(typeof value === 'string'){
+        return 'Str.'
+    }
+    if(typeof value === 'boolean'){
+        return 'Bol.'
     }
     return type;  
 }
@@ -81,7 +86,6 @@ function getType(value) {
 function handleChildren(children){
     if(typeof children != 'object' || Array.isArray(children)) return ''
     return Object.keys(children).map(key =>{
-        console.log(children[key])
         return {
             key,
             type: getType(children[key]),
@@ -106,7 +110,8 @@ function handleState(state){
     })
 }
 const list = handleState(_state)
-console.log(list)
+
+
 </script>
 
 <template>
@@ -130,27 +135,15 @@ console.log(list)
                 </template>
                 <Tree :tree-data="list">
                     <template #title="{ value, key, type,children }">
-                        <div>
-                            <span>{{ key }}</span> : 
-                            <span>{{ type }}</span> :
-                            <span v-if="!children">{{ value }}</span>
+                        <div class="field-row">
+                            <div class="field-type">
+                                <span >{{ type }}</span>  
+                            </div>
+                            <span class="field-key">{{ key }}</span> 
+                            <span class="field-value" v-if="!children">{{ value }}</span>
                         </div>
                     </template>
                 </Tree>
-                <!-- <List :data-source="_stateKeys" size="small">
-                    <template #renderItem="{ item }">
-                        <ListItem>
-                            <span>{{ _state[item].type }}</span>
-                            {{ item }}
-                            <span>:{{ _state[item].value }}</span>
-                            <template #actions>
-                                <div class="icon-wrap" @click="editState(item)" >
-                                    <EditOutlined title="编辑" />
-                                </div>
-                            </template>
-                        </ListItem>
-                    </template>
-                </List> -->
             </CollapsePanel>
         </Collapse>
         <!-- 添加页面变量弹窗 -->
@@ -193,6 +186,56 @@ console.log(list)
         &:hover{
             font-weight: 500;
             color: #333;
+        }
+    }
+    .ant-collapse-content-box{
+        padding: 5px 0 !important;
+        .ant-tree-treenode{
+            width: 100%;
+            .ant-tree-node-content-wrapper{
+                flex: 1;
+                min-width: 0;
+                .field-row{
+                    display: flex;
+                    align-items: center;
+                    flex-wrap: nowrap;
+                    overflow: hidden;
+                    &:hover{
+                        .field-type{
+                            background-color: transparent;
+                        }
+                    }
+                    .field-type{
+                        width: 32px;
+                        margin-right: 6px;
+                        text-align: center;
+                        background-color: rgba(0, 0, 0, 0.04);
+                        flex-grow: 0;
+                        position: relative;
+                        
+                    }
+                    .field-key{
+                        margin-right: 8px;
+                        color: #000;
+                        font-weight: 600;
+                        &::after{
+                            font-weight: 400;
+                            color: #333;
+                            margin-left: 3px;
+                            display: inline-block;
+                            content: ':';
+                        }
+                    }
+                    .field-value{
+                        flex: 1;
+                        margin-right: 5px;
+                        white-space: nowrap;   
+                        overflow: hidden;  
+                        text-overflow: ellipsis;  
+                        color: #666;
+                    }
+                }
+            }
         }
     }
 }
