@@ -1,8 +1,7 @@
 <script setup>
 import { reactive, ref } from 'vue'
 import { _state, _stateKeys } from '@/stores/index.js'
-import { Tree } from 'ant-design-vue';
-import { Collapse, CollapsePanel, Modal, Form, FormItem, Input, Textarea, Button, List, ListItem } from 'ant-design-vue';
+import { Collapse, CollapsePanel, Modal, Form, FormItem, Input, Textarea, Button, Tree } from 'ant-design-vue';
 import { CaretRightOutlined, PlusOutlined, EditOutlined } from '@ant-design/icons-vue';
 // https://jsonplaceholder.typicode.com/users
 const activeKey = ref("")
